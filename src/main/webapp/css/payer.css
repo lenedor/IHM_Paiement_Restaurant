@@ -1,0 +1,38 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Mar 31, 2017, 10:02:08 AM
+    Author     : gaunetc
+*/
+
+/* On travaille sur la balise body, donc sur TOUTE la page */
+
+
+#customers {
+    border-collapse: collapse;
+    width: 25%;
+    margin-left: 40px;
+}
+
+#customers td, #customers th {
+    border: 2px  white;
+    padding: 25px;
+}
+
+#customers tr:nth-child(even){background-color: transparent;
+}
+
+#customers th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: transparent;
+    color: white;
+}
+
+#total{
+    margin-left: 450px;
+}
