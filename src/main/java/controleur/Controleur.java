@@ -18,33 +18,75 @@ import modele.Table;
 @WebServlet(name = "Controleur", urlPatterns = {"/controleur"})
 public class Controleur extends HttpServlet {
 
+    /*Variables globales */
+    Table table = null;
+    String client = null;
+
     /* créations des tables */
  /* scénario 4 étudiants */
-    Table etudiant = new Table("4etudiants");
-    List<Plat> platsVincent = new ArrayList<Plat>();
-    Commande vincent = new Commande("vincent");
-    List<Plat> platsOlivier = new ArrayList<Plat>();
-    Commande olivier = new Commande("olivier");
-    List<Plat> platsLaurent = new ArrayList<Plat>();
-    Commande laurent = new Commande("laurent");
-    List<Plat> platsNicolas = new ArrayList<Plat>();
-    Commande nicolas = new Commande("nicolas");
+    Table initEtudiants() {
+        Table etudiants = new Table("4etudiants");
+        List<Plat> platsVincent = new ArrayList<Plat>();
+        Commande vincent = new Commande("vincent");
+        Plat plat1 = new Plat("Carpaccio", 13);
+        Plat plat2 = new Plat("Biere pression", 4);
+        Plat plat3 = new Plat("Tiramisu", 6);
+        vincent.ajoutePlat(plat1);
+        vincent.ajoutePlat(plat2);
+        vincent.ajoutePlat(plat3);
+        etudiants.ajouterCommande(vincent);
+        List<Plat> platsOlivier = new ArrayList<Plat>();
+        Commande olivier = new Commande("olivier");
+        Plat plat4 = new Plat("Salade italienne", 13);
+        Plat plat5 = new Plat("Ile flottante", 6);
+        Plat plat6 = new Plat("Verre de Chardonnay", 3);
+        olivier.ajoutePlat(plat4);
+        olivier.ajoutePlat(plat5);
+        olivier.ajoutePlat(plat6);
+        etudiants.ajouterCommande(olivier);
+        List<Plat> platsLaurent = new ArrayList<Plat>();
+        Commande laurent = new Commande("laurent");
+        Plat plat7 = new Plat("Lasagnes", 12);
+        Plat plat8 = new Plat("Crumble aux pommes", 6);
+        Plat plat9 = new Plat("Verre de Chardonnay", 3);
+        laurent.ajoutePlat(plat7);
+        laurent.ajoutePlat(plat8);
+        laurent.ajoutePlat(plat9);
+        etudiants.ajouterCommande(laurent);
+        List<Plat> platsNicolas = new ArrayList<Plat>();
+        Commande nicolas = new Commande("nicolas");
+        Plat plat10 = new Plat("Magret de canard au miel", 16);
+        Plat plat11 = new Plat("Tarte aux pommes", 5);
+        Plat plat12 = new Plat("Badoit rouge", 3);
+        nicolas.ajoutePlat(plat10);
+        nicolas.ajoutePlat(plat11);
+        nicolas.ajoutePlat(plat12);
+        etudiants.ajouterCommande(olivier);
+        return etudiants;
+    }
 
+    ///////!!!!!\\\\ finir les autres init pr varier les cas
     /* scénario 1 couple */
-    Table couple = new Table("1couple");
-    List<Plat> platsPaul = new ArrayList<Plat>();
-    Commande paul = new Commande("paul"); 
-    List<Plat> platsLouise = new ArrayList<Plat>();
-    Commande louise = new Commande("louise");
+    Table initCouple() {
+        Table couple = new Table("1couple");
+        List<Plat> platsPaul = new ArrayList<Plat>();
+        Commande paul = new Commande("paul");
+        List<Plat> platsLouise = new ArrayList<Plat>();
+        Commande louise = new Commande("louise");
+        return couple;
+    }
 
     /* scénario 2 parents avec leur enfant */
-    Table parents = new Table("2parents1enfant");
-    List<Plat> platsLucas = new ArrayList<Plat>();
-    Commande lucas = new Commande("lucas");
-    List<Plat> platsManon = new ArrayList<Plat>();
-    Commande manon = new Commande("manon");
-    List<Plat> platsEnzo = new ArrayList<Plat>();
-    Commande enzo = new Commande("enzo");
+    Table initParents() {
+        Table parents = new Table("2parents1enfant");
+        List<Plat> platsLucas = new ArrayList<Plat>();
+        Commande lucas = new Commande("lucas");
+        List<Plat> platsManon = new ArrayList<Plat>();
+        Commande manon = new Commande("manon");
+        List<Plat> platsEnzo = new ArrayList<Plat>();
+        Commande enzo = new Commande("enzo");
+        return parents;
+    }
 
     @Resource(name = "jdbc/Paiement_restaurant")
     private DataSource ds;
@@ -68,8 +110,15 @@ public class Controleur extends HttpServlet {
         if (action == null) {
             request.getRequestDispatcher("/WEB-INF/finRepas.jsp").forward(request, response);
         } else if (action.equals("choisirPartsPaiement")) {
+            /* Lancer l'initialisation de la table selon le cas que l'on souhaite tester */
+            table = initEtudiants();
+            /* Choisir le client qui utilise l'ihm */
+            client = "vincent";
             request.getRequestDispatcher("/WEB-INF/choisirPartsPaiement.jsp").forward(request, response);
         } else if (action.equals("payerMaCommande")) {
+            /* Envoi des informations et redirection*/
+            request.setAttribute("table", table);
+            request.setAttribute("client", client);
             request.getRequestDispatcher("/WEB-INF/payerMaCommande.jsp").forward(request, response);
         } else if (action.equals("paiementPersonnalise")) {
             request.getRequestDispatcher("/WEB-INF/paiementPersonnalise.jsp").forward(request, response);
