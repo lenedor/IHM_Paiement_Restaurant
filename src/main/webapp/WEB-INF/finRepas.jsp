@@ -29,7 +29,7 @@
         <h1>Souhaitez-vous régler ?</h1>
         <form action="controleur" method="get" align="center">
             <button type="submit" class="button"><span>Paiement</span></button><br>
-            <input type="hidden" name="action" value="paiement"/>
+            <input type="hidden" name="action" value="choisirPartsPaiement"/>
         </form>
     </body>
 </html>
