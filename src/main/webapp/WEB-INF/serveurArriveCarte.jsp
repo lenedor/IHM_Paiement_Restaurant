@@ -9,9 +9,10 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Serveur Arrive</title>
+        <title>Serveur Arrive Carte</title>
     </head>
     <body>
         <h1>Un serveur vient finaliser le paiement.</h1>
+        <h1>Vous pouvez préparer votre carte.</h1>
     </body>
 </html>

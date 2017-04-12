@@ -42,6 +42,14 @@ public class Controleur extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/payerMaCommande.jsp").forward(request, response);
         } else if (action.equals("paiementPersonnalise")) {
             request.getRequestDispatcher("/WEB-INF/paiementPersonnalise.jsp").forward(request, response);
+        } else if (action.equals("choisirMoyenPaiement")) {
+            request.getRequestDispatcher("/WEB-INF/choisirMoyenPaiement.jsp").forward(request, response);
+        } else if (action.equals("recapitulatifChoixPlatsPaiement")) {
+            request.getRequestDispatcher("/WEB-INF/recapitulatifChoixPlatsPaiement.jsp").forward(request, response);
+        } else if (action.equals("serveurArriveEspece")) {
+            request.getRequestDispatcher("/WEB-INF/serveurArriveEspece.jsp").forward(request, response);
+        } else if (action.equals("serveurArriveCarte")) {
+            request.getRequestDispatcher("/WEB-INF/serveurArriveCarte.jsp").forward(request, response);
         } else {
             invalidParameters(request, response);
         }
