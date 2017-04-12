@@ -13,10 +13,12 @@ package modele;
 public class Plat {
     private String nom; 
     private int prix; 
+    private int selectionne; // 0 = non select 1 = select
 
     public Plat(String nom, int prix) {
         this.nom = nom;
         this.prix = prix;
+        this.selectionne = 0; 
     }
 
     public String getNom() {
@@ -27,5 +29,12 @@ public class Plat {
         return prix;
     }
     
+    public void setSelectionne(int x) {
+        this.selectionne = x; 
+    }
     
+
+    public int getSelectionne() {
+        return selectionne;
+    }
 }

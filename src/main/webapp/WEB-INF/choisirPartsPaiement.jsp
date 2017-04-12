@@ -17,9 +17,19 @@
             <button type="submit" class="button"><span>Ma Part</span></button><br>
             <input type="hidden" name="action" value="payerMaCommande"/>
         </form>
+        <p></p>
+        <p></p>
+        <p></p>
         <form action="controleur" method="get" align="center">
             <button type="submit" class="button"><span>Paiement customisé</span></button><br>
             <input type="hidden" name="action" value="paiementPersonnalise"/>
         </form>    
+        <p></p>
+        <p></p>
+        <p></p>
+        <form action="controleur" method="get" align="center">
+            <button type="submit" class="button"><span>Retour</span></button><br>
+            <input type="hidden" name="action" value="retourFinRepas"/>
+        </form>
     </body>
 </html>
