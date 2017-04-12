@@ -67,8 +67,20 @@ public class Controleur extends HttpServlet {
 
         if (action == null) {
             request.getRequestDispatcher("/WEB-INF/finRepas.jsp").forward(request, response);
-        } else if (action.equals("paiement")) {
-            request.getRequestDispatcher("/WEB-INF/typePaiement.jsp").forward(request, response);
+        } else if (action.equals("choisirPartsPaiement")) {
+            request.getRequestDispatcher("/WEB-INF/choisirPartsPaiement.jsp").forward(request, response);
+        } else if (action.equals("payerMaCommande")) {
+            request.getRequestDispatcher("/WEB-INF/payerMaCommande.jsp").forward(request, response);
+        } else if (action.equals("paiementPersonnalise")) {
+            request.getRequestDispatcher("/WEB-INF/paiementPersonnalise.jsp").forward(request, response);
+        } else if (action.equals("choisirMoyenPaiement")) {
+            request.getRequestDispatcher("/WEB-INF/choisirMoyenPaiement.jsp").forward(request, response);
+        } else if (action.equals("recapitulatifChoixPlatsPaiement")) {
+            request.getRequestDispatcher("/WEB-INF/recapitulatifChoixPlatsPaiement.jsp").forward(request, response);
+        } else if (action.equals("serveurArriveEspece")) {
+            request.getRequestDispatcher("/WEB-INF/serveurArriveEspece.jsp").forward(request, response);
+        } else if (action.equals("serveurArriveCarte")) {
+            request.getRequestDispatcher("/WEB-INF/serveurArriveCarte.jsp").forward(request, response);
         } else {
             invalidParameters(request, response);
         }

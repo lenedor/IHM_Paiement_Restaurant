@@ -13,23 +13,20 @@
     </head>
     <body>
         <h1>Avez-vous encore faim ?</h1>
-        <form action="controleur" method="get" align="center">
+        <form action="controleur" method="get">
             <button type="submit" class="button"><span>Menu</span></button><br>
-            <input type="hidden" name="action" value="menu"/>
         </form>
-        <form action="controleur" method="get" align="center">
+        <form action="controleur" method="get">
             <button type="submit" class="button"><span>Dessert</span></button><br>
-            <input type="hidden" name="action" value="dessert"/>
         </form>
-        <form action="controleur" method="get" align="center">
+        <form action="controleur" method="get">
             <button type="submit" class="button"><span>Café</span></button><br>
-            <input type="hidden" name="action" value="cafe"/>
         </form>
         
         <h1>Souhaitez-vous régler ?</h1>
         <form action="controleur" method="get" align="center">
             <button type="submit" class="button"><span>Paiement</span></button><br>
-            <input type="hidden" name="action" value="paiement"/>
+            <input type="hidden" name="action" value="choisirPartsPaiement"/>
         </form>
     </body>
 </html>

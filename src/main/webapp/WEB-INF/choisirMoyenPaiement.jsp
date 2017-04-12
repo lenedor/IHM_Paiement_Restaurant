@@ -15,12 +15,12 @@
         <h1>Choisissez votre moyen de paiement : </h1>
         <form action="controleur" accept-charset="utf-8">
         <button type="submit" class="button"><span>Especes</span></button><br>
-        <input type="hidden" name="action" value="especes"/>
+        <input type="hidden" name="action" value="serveurArriveEspece"/>
         <input type="hidden" name="total" value=${total}/>
         </form>
         <form action="controleur" accept-charset="utf-8">
         <button type="submit" class="button"><span>Carte Bancaire</span></button><br>
-        <input type="hidden" name="action" value="carteBancaire"/>
+        <input type="hidden" name="action" value="serveurArriveCarte"/>
         <input type="hidden" name="total" value=${total}/>
         </form>
     </body>

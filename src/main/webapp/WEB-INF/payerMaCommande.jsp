@@ -15,7 +15,7 @@
         <h1>Votre commande : </h1>
         <form action="controleur" accept-charset="utf-8">
         <button type="submit" class="button"><span>Payer</span></button><br>
-        <input type="hidden" name="action" value="Payer"/>
+        <input type="hidden" name="action" value="choisirMoyenPaiement"/>
         <input type="hidden" name="total" value="total"/>
         </form>
     </body>
