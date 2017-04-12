@@ -10,17 +10,24 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Page fin repas</title>
+        
+        <style>
+        #buttonMenu{
+            left : 40%;
+        }
+        </style>
+        
     </head>
     <body>
         <h1>Avez-vous encore faim ?</h1>
         <form action="controleur" method="get">
-            <button type="submit" class="button"><span>Menu</span></button><br>
+            <button type="submit" class="button" id="buttonMenu"><span>Menu</span></button><br>
         </form>
         <form action="controleur" method="get">
-            <button type="submit" class="button"><span>Dessert</span></button><br>
+            <button type="submit" class="button" id="buttonDessert"><span>Dessert</span></button><br>
         </form>
         <form action="controleur" method="get">
-            <button type="submit" class="button"><span>Café</span></button><br>
+            <button type="submit" class="button" id="buttonCafe"><span>Café</span></button><br>
         </form>
         
         <h1>Souhaitez-vous régler ?</h1>
