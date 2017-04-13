@@ -10,7 +10,9 @@ package modele;
  *
  * @author bagouc
  */
+
 public class Plat {
+    int id; 
     private String nom; 
     private int prix; 
     private int selectionne; // 0 = non select 1 = select
@@ -19,6 +21,14 @@ public class Plat {
         this.nom = nom;
         this.prix = prix;
         this.selectionne = 0; 
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNom() {
@@ -37,4 +47,6 @@ public class Plat {
     public int getSelectionne() {
         return selectionne;
     }
+    
+    
 }

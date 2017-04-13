@@ -55,7 +55,7 @@
             <!--<p align="left">-->
             <tr>
                     <td><%=plat.getNom()%></td>
-                    <td><%=plat.getPrix()%></td>
+                    <td><%=plat.getPrix()%>€</td>
             </tr>
             <p></p>
             <%
@@ -64,7 +64,7 @@
             %>
                 </tr>
             </table>
-            <p id="total"> Total : <%=table.getTotal()%> €</p>
+            <p id="total"> Total : <%=commande.getTotal()%> €</p>
             
             <button type="submit" class="button" id="total"><span>Payer</span></button><br>
             <input type="hidden" name="action" value="choisirMoyenPaiement"/>

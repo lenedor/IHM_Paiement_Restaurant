@@ -19,6 +19,7 @@ public class Table {
     private int total; 
     private int totalCour; 
     private int montantCour; 
+    private int nbrePlat; 
 
     public Table(String nom) {
         this.nom = nom; 
@@ -26,6 +27,11 @@ public class Table {
         this.total = 0; 
         this.totalCour = 0; 
         this.montantCour = 0;
+        this.nbrePlat = 0; 
+    }
+
+    public int getNbrePlat() {
+        return nbrePlat;
     }
 
     public int getMontantCour() {
@@ -85,6 +91,57 @@ public class Table {
             commande.passerPlatsDeselect();
             commande.setSelectionner(0);            
         }
+    }
+    
+     public void passerCommandesSelect() {
+        Iterator<Commande> it = this.commandes.iterator(); 
+        while (it.hasNext()) {
+            Commande commande = it.next();
+            commande.passerPlatsSelect();
+            commande.setSelectionner(1);            
+        }
+    }
+    
+    public void incremNbrePlat() {
+        this.nbrePlat++; 
+    }
+    
+    public void attribuerIdPlat() {
+        Iterator<Commande> it = this.commandes.iterator(); 
+        while (it.hasNext()) {
+            Commande commande = it.next();
+            Iterator<Plat> it2 = commande.getPlatsChoisis().iterator(); 
+            while (it2.hasNext()) {
+                it2.next().setId(this.nbrePlat);
+                this.incremNbrePlat();
+            }
+        }
+    }
+    
+    public Plat getPlatEnFontionId(int id) {
+        Iterator<Commande> it = this.commandes.iterator(); 
+        while (it.hasNext()) {
+           Commande commande = it.next(); 
+           Iterator<Plat> it2 = commande.getPlatsChoisis().iterator();
+           Plat plat = it2.next(); 
+           if (plat.getId() == id) {
+               return plat; 
+           }
+        }
+        return null; 
+    }
+    
+    public Commande getCommandeEnFontionIdPlat(int id) {
+        Iterator<Commande> it = this.commandes.iterator(); 
+        while (it.hasNext()) {
+           Commande commande = it.next(); 
+           Iterator<Plat> it2 = commande.getPlatsChoisis().iterator();
+           Plat plat = it2.next(); 
+           if (plat.getId() == id) {
+               return commande; 
+           }
+        }
+        return null; 
     }
     
 }

@@ -40,10 +40,10 @@ public class Controleur extends HttpServlet {
         Commande olivier = new Commande("olivier");
         Plat plat4 = new Plat("Salade chevre et croutons", 13);
         Plat plat5 = new Plat("Ile flottante               ", 6);
-       // Plat plat6 = new Plat("Verre de Chardonnay         ", 3);
+        // Plat plat6 = new Plat("Verre de Chardonnay         ", 3);
         olivier.ajoutePlat(plat4);
         olivier.ajoutePlat(plat5);
-    //    olivier.ajoutePlat(plat6);
+        //    olivier.ajoutePlat(plat6);
         etudiants.ajouterCommande(olivier);
         List<Plat> platsLaurent = new ArrayList<Plat>();
         Commande laurent = new Commande("laurent");
@@ -113,76 +113,139 @@ public class Controleur extends HttpServlet {
         } else if (action.equals("choisirPartsPaiement")) {
             /* Lancer l'initialisation de la table selon le cas que l'on souhaite tester */
             table = initEtudiants();
+            table.attribuerIdPlat();
             /* Choisir le client qui utilise l'ihm */
             client = "vincent";
             table.setTotalCour(0);
             table.passerCommandesDeselect();
             request.getRequestDispatcher("/WEB-INF/choisirPartsPaiement.jsp").forward(request, response);
+
         } else if (action.equals("retourFinRepas")) {
             request.getRequestDispatcher("/WEB-INF/finRepas.jsp").forward(request, response);
-        } else if (action.equals("recapitulatifChoixPlatsPaiement")) {
-            request.getRequestDispatcher("/WEB-INF/choisirPartsPaiement.jsp").forward(request, response);
+
         } else if (action.equals("AjoutOuRetraitCommandeEntiere")) {
             int montant = Integer.parseInt(request.getParameter("total"));
             String nomCommande = request.getParameter("nomCommande");
             Commande commande = table.getCommande(nomCommande);
             if (montant < 0) {
+                // on veut enlever une commande
                 commande.setSelectionner(0);
+                if (commande.tousPlatsSelect()) {
+                    commande.passerPlatsDeselect();
+                    table.addTotalCour(montant);
+                } else {
+                    Iterator<Plat> itPlat = commande.getPlatsChoisis().iterator();
+                    while (itPlat.hasNext()) {
+                        Plat p = itPlat.next();
+                        if (p.getSelectionne() == 1) {
+                            p.setSelectionne(0);
+                            table.addTotalCour(-p.getPrix());
+                        }
+                    }
+                }
             } else {
+                // on veut selectionner une commande
                 commande.setSelectionner(1);
+                if (commande.tousPlatsDeselect()) {
+                    commande.passerPlatsSelect();
+                    table.addTotalCour(montant);
+                } else {
+                    Iterator<Plat> itPlat = commande.getPlatsChoisis().iterator();
+                    while (itPlat.hasNext()) {
+                        Plat p = itPlat.next();
+                        if (p.getSelectionne() == 0) {
+                            p.setSelectionne(1);
+                            table.addTotalCour(p.getPrix());
+                        }
+                    }
+                }
             }
-            table.addTotalCour(montant);
+
             /* Envoi des informations et redirection*/
             request.setAttribute("table", table);
             request.setAttribute("client", client);
             request.getRequestDispatcher("/WEB-INF/paiementPersonnalise.jsp").forward(request, response);
+
         } else if (action.equals("AjoutOuRetraitPlat")) {
+            // int id = Integer.parseInt("idPlat"); 
             int montant = Integer.parseInt(request.getParameter("prix"));
-            System.out.println("montant= "+montant);
             String nomCommande = request.getParameter("nomCommande");
             String nomPlat = request.getParameter("plat");
             Commande commande = table.getCommande(nomCommande);
             Plat plat = commande.getPlat(nomPlat);
             if (montant < 0) {
+                // on veut enlever un plat
                 plat.setSelectionne(0);
+                if (commande.tousPlatsDeselect()) {
+                    commande.setSelectionner(0);
+                }
             } else {
+                // on veut selectionner un plat
                 plat.setSelectionne(1);
+                if (commande.tousPlatsSelect()) {
+                    commande.setSelectionner(1);
+                }
             }
             table.addTotalCour(montant);
+            /* Envoi des informations et redirection */
+            request.setAttribute("table", table);
+            request.setAttribute("client", client);
+            request.getRequestDispatcher("/WEB-INF/paiementPersonnalise.jsp").forward(request, response);
+
+        } else if (action.equals("retourChoisirPartPaiement")) {
+            request.getRequestDispatcher("/WEB-INF/choisirPartsPaiement.jsp").forward(request, response);
+
+        } else if (action.equals("annulerEtRecommencerPaiement")) {
+            request.getRequestDispatcher("/WEB-INF/choisirPartsPaiement.jsp").forward(request, response);
+
+        } else if (action.equals("reglerTotaliteNote")) {
+            table.passerCommandesSelect();
+            table.setTotalCour(table.getTotal());
             /* Envoi des informations et redirection*/
             request.setAttribute("table", table);
             request.setAttribute("client", client);
             request.getRequestDispatcher("/WEB-INF/paiementPersonnalise.jsp").forward(request, response);
-        } else if (action.equals("retourChoisirPartPaiement")) {
-            request.getRequestDispatcher("/WEB-INF/choisirPartsPaiement.jsp").forward(request, response);
-        } else if (action.equals("annulerEtRecommencerPaiement")) {
-            request.getRequestDispatcher("/WEB-INF/choisirPartsPaiement.jsp").forward(request, response);
+
         } else if (action.equals("payerMaCommande")) {
             /* Envoi des informations et redirection*/
             request.setAttribute("table", table);
             request.setAttribute("client", client);
             request.getRequestDispatcher("/WEB-INF/payerMaCommande.jsp").forward(request, response);
+
         } else if (action.equals("paiementPersonnalise")) {
             /* Envoi des informations et redirection*/
             request.setAttribute("table", table);
             request.setAttribute("client", client);
             request.getRequestDispatcher("/WEB-INF/paiementPersonnalise.jsp").forward(request, response);
+
         } else if (action.equals("choisirMoyenPaiement")) {
             request.getRequestDispatcher("/WEB-INF/choisirMoyenPaiement.jsp").forward(request, response);
+
         } else if (action.equals("recapitulatifChoixPlatsPaiement")) {
             /* On récupère la liste des plats selectionnés */
             int total = Integer.parseInt(request.getParameter("total"));
             ArrayList<Plat> plats = new ArrayList<Plat>();
-            if (total == table.getTotal()) {
-                Iterator<Commande> commandes = table.getCommandes().iterator();
-                // A CONTINUER
+            Iterator<Commande> commandes = table.getCommandes().iterator();
+            while (commandes.hasNext()) {
+                Commande commande = commandes.next();
+                Iterator<Plat> itPlats = commande.getPlatsChoisis().iterator();
+                while (itPlats.hasNext()) {
+                    Plat p = itPlats.next();
+                    if (p.getSelectionne() == 1) {
+                        plats.add(p);
+                    }
+                }
             }
             request.setAttribute("total", total);
+            request.setAttribute("plats", plats);
             request.getRequestDispatcher("/WEB-INF/recapitulatifChoixPlatsPaiement.jsp").forward(request, response);
+
         } else if (action.equals("serveurArriveEspece")) {
             request.getRequestDispatcher("/WEB-INF/serveurArriveEspece.jsp").forward(request, response);
+
         } else if (action.equals("serveurArriveCarte")) {
             request.getRequestDispatcher("/WEB-INF/serveurArriveCarte.jsp").forward(request, response);
+
         } else {
             invalidParameters(request, response);
         }

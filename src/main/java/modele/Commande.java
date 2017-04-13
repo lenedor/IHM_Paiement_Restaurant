@@ -78,4 +78,32 @@ public class Commande {
             it.next().setSelectionne(0);
         }
     }
+    
+    public void passerPlatsSelect() {
+        Iterator<Plat> it = this.platsChoisis.iterator();
+        while (it.hasNext()) {
+            it.next().setSelectionne(1);
+        }
+    }
+    
+    // dit si tous les plats d'une commande sont select
+    public boolean tousPlatsSelect() {
+        Iterator<Plat> it = this.platsChoisis.iterator(); 
+        while (it.hasNext()) {
+            if (it.next().getSelectionne() == 0) {
+                return false; 
+            }
+        }
+        return true; 
+    }
+    
+    public boolean tousPlatsDeselect() {
+        Iterator<Plat> it = this.platsChoisis.iterator(); 
+        while (it.hasNext()) {
+            if (it.next().getSelectionne() == 1) {
+                return false; 
+            }
+        }
+        return true; 
+    }
 }
