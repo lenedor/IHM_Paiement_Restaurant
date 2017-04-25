@@ -78,7 +78,7 @@
                             <input type="hidden" name="nomCommande" value="<%=commande.getNomClient()%>"/>
                         </form></td>
                     <%} else{%>
-                        <p> Le plat a deja ete selectionne par : <%= plat.getNomSelectionne() %></p>
+                        <td> Le plat a deja ete selectionne par : <%= plat.getNomSelectionne() %></td>
                     <%}%>
                 </tr>
 

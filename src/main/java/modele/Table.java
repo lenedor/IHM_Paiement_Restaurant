@@ -93,11 +93,11 @@ public class Table {
         }
     }
     
-     public void passerCommandesSelect() {
+     public void passerCommandesSelect(String nom) {
         Iterator<Commande> it = this.commandes.iterator(); 
         while (it.hasNext()) {
             Commande commande = it.next();
-            commande.passerPlatsSelect();
+            commande.passerPlatsSelect(nom);
             commande.setSelectionner(1);            
         }
     }

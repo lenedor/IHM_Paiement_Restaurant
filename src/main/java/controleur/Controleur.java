@@ -158,7 +158,7 @@ public class Controleur extends HttpServlet {
                 commande.setSelectionner(1);
                 commande.setNomSelectionne(null);
                 if (commande.tousPlatsDeselect()) {
-                    commande.passerPlatsSelect();
+                    commande.passerPlatsSelect(session.getAttribute("nom").toString());
                     table.addTotalCour(montant);
                 } else {
                     Iterator<Plat> itPlat = commande.getPlatsChoisis().iterator();
@@ -231,7 +231,7 @@ public class Controleur extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/choisirPartsPaiement.jsp").forward(request, response);
 
         } else if (action.equals("reglerTotaliteNote")) {
-            table.passerCommandesSelect();
+            table.passerCommandesSelect(session.getAttribute("nom").toString());
             table.setTotalCour(table.getTotal());
             /* Envoi des informations et redirection*/
             request.setAttribute("table", table);
