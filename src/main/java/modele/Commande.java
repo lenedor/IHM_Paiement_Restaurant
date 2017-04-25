@@ -84,7 +84,9 @@ public class Commande {
     public void passerPlatsDeselect() {
         Iterator<Plat> it = this.platsChoisis.iterator();
         while (it.hasNext()) {
-            it.next().setSelectionne(0);
+            Plat plat = it.next();   
+            plat.setSelectionne(0);
+            plat.setNomSelectionne(null);
         }
     }
     
@@ -118,12 +120,4 @@ public class Commande {
         return true; 
     }
     
-    public void toutDeselect(String nom){
-        Iterator<Plat> it = this.platsChoisis.iterator();
-        while (it.hasNext()) {
-            Plat plat = it.next();
-            if(plat.getNomSelectionne().equals(nom))
-                it.next().setSelectionne(0);
-        }        
-    }
 }
