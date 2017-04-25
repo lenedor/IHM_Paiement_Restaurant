@@ -106,10 +106,15 @@
                     } else {
                         totaliteNote = "Régler la totalité de la note"; 
                     }
+                    int enleverTotaliteNote = 0; 
+                    if (totaliteNote.equals("Désélectionner tout")) {
+                        enleverTotaliteNote = 1; 
+                    }
                 %>
                 <button type="submit" class="button"><span><%=totaliteNote%></span></button><br>
                 <input type="hidden" name="action" value="reglerTotaliteNote"/>
                 <input type="hidden" name="total" value="<%=table.getTotal()%>"/>
+                <input type="hidden" name="aEnlever" value="<%=enleverTotaliteNote%>"/>
             </form>
             <p id="total"> Total à payer:  <%=table.getTotalCour()%> €</p>
             <form action="controleur" accept-charset="utf-8">

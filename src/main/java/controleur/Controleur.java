@@ -186,7 +186,7 @@ public class Controleur extends HttpServlet {
             Commande commande = table.getCommande(nomCommande);
             Plat plat = commande.getPlat(nomPlat);
 
-            if (montant < 0) {
+            /*if (montant < 0) {
                 // on veut enlever un plat
                 plat.setSelectionne(0);
                 plat.setNomSelectionne(null);
@@ -201,29 +201,28 @@ public class Controleur extends HttpServlet {
                     commande.setSelectionner(1);
                 }
             }
-            table.addTotalCour(montant);
+            table.addTotalCour(montant);*/
+            plat.setNomSelectionne(session.getAttribute("nom").toString());
+            //if (commande.tousPlatsSelect()) {
+            commande.setSelectionner(1);
+            commande.setNomSelectionne(session.getAttribute("nom").toString());
 
-                plat.setNomSelectionne(session.getAttribute("nom").toString());
+            if (montant < 0) {
+                // on veut enlever un plat
+                plat.setSelectionne(0);
+                if (commande.tousPlatsDeselect()) {
+                    commande.setSelectionner(0);
+                }
+            } else {
+                // on veut selectionner un plat
+                plat.setSelectionne(1);
                 if (commande.tousPlatsSelect()) {
                     commande.setSelectionner(1);
-                    commande.setNomSelectionne(session.getAttribute("nom").toString());
-
-                    if (montant < 0) {
-                        // on veut enlever un plat
-                        plat.setSelectionne(0);
-                        if (commande.tousPlatsDeselect()) {
-                            commande.setSelectionner(0);
-                        }
-                    } else {
-                        // on veut selectionner un plat
-                        plat.setSelectionne(1);
-                        if (commande.tousPlatsSelect()) {
-                            commande.setSelectionner(1);
-                        }
-                    }
-                    table.addTotalCour(montant);
                 }
-            
+            }
+            table.addTotalCour(montant);
+            //}
+
             /* Envoi des informations et redirection */
             request.setAttribute("table", table);
             request.setAttribute("client", session.getAttribute("nom").toString());
@@ -236,8 +235,14 @@ public class Controleur extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/choisirPartsPaiement.jsp").forward(request, response);
 
         } else if (action.equals("reglerTotaliteNote")) {
-            table.passerCommandesSelect();
-            table.setTotalCour(table.getTotal());
+            int aEnlever = Integer.parseInt(request.getParameter("aEnlever")); 
+            if (aEnlever == 0) {
+                table.passerCommandesSelect();
+                table.setTotalCour(table.getTotal());
+            } else {
+                table.passerCommandesDeselect();
+                table.setTotalCour(0); 
+            }
             /* Envoi des informations et redirection*/
             request.setAttribute("table", table);
             request.setAttribute("client", session.getAttribute("nom").toString());
