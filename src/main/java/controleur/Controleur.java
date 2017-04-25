@@ -111,15 +111,15 @@ public class Controleur extends HttpServlet {
             throws IOException, ServletException {
         request.setCharacterEncoding("UTF-8");
         String action = request.getParameter("action");
-        
+
         HttpSession session = request.getSession();
 
         if (action == null) {
             request.getRequestDispatcher("/WEB-INF/choixPersonne.jsp").forward(request, response);
         } else if (action.equals("choisirPartsPaiement")) {
             /* Lancer l'initialisation de la table selon le cas que l'on souhaite tester */
-           // table = initEtudiants();
-            table = initCouple(); 
+            // table = initEtudiants();
+            table = initCouple();
             table.attribuerIdPlat();
             /* Choisir le client qui utilise l'ihm */
             //client = "vincent";
@@ -156,7 +156,7 @@ public class Controleur extends HttpServlet {
             } else {
                 // on veut selectionner une commande
                 commande.setSelectionner(1);
-                commande.setNomSelectionne(null);                
+                commande.setNomSelectionne(null);
                 if (commande.tousPlatsDeselect()) {
                     commande.passerPlatsSelect();
                     table.addTotalCour(montant);
@@ -186,22 +186,39 @@ public class Controleur extends HttpServlet {
             Commande commande = table.getCommande(nomCommande);
             Plat plat = commande.getPlat(nomPlat);
 
-            if (plat.getSelectionne() == 0) {
-                if (montant < 0) {
-                    // on veut enlever un plat
-                    plat.setSelectionne(0);
-                    if (commande.tousPlatsDeselect()) {
-                        commande.setSelectionner(0);
-                    }
-                } else {
-                    // on veut selectionner un plat
-                    plat.setSelectionne(1);
-                    if (commande.tousPlatsSelect()) {
-                        commande.setSelectionner(1);
-                    }
+            if (montant < 0) {
+                // on veut enlever un plat
+                plat.setSelectionne(0);
+                plat.setNomSelectionne(null);
+                if (commande.tousPlatsDeselect()) {
+                    commande.setSelectionner(0);
+                    commande.setNomSelectionne(null);
                 }
-                table.addTotalCour(montant);
+            } else {
+                // on veut selectionner un plat
+                plat.setSelectionne(1);
+                plat.setNomSelectionne(session.getAttribute("nom").toString());
+                if (commande.tousPlatsSelect()) {
+                    commande.setSelectionner(1);
+                    commande.setNomSelectionne(session.getAttribute("nom").toString());
+
+                    if (montant < 0) {
+                        // on veut enlever un plat
+                        plat.setSelectionne(0);
+                        if (commande.tousPlatsDeselect()) {
+                            commande.setSelectionner(0);
+                        }
+                    } else {
+                        // on veut selectionner un plat
+                        plat.setSelectionne(1);
+                        if (commande.tousPlatsSelect()) {
+                            commande.setSelectionner(1);
+                        }
+                    }
+                    table.addTotalCour(montant);
+                }
             }
+
             /* Envoi des informations et redirection */
             request.setAttribute("table", table);
             request.setAttribute("client", session.getAttribute("nom").toString());
