@@ -185,24 +185,23 @@ public class Controleur extends HttpServlet {
             String nomPlat = request.getParameter("plat");
             Commande commande = table.getCommande(nomCommande);
             Plat plat = commande.getPlat(nomPlat);
-            if (montant < 0) {
-                // on veut enlever un plat
-                plat.setSelectionne(0);
-                plat.setNomSelectionne(null);
-                if (commande.tousPlatsDeselect()) {
-                    commande.setSelectionner(0);
-                    commande.setNomSelectionne(null);
+
+            if (plat.getSelectionne() == 0) {
+                if (montant < 0) {
+                    // on veut enlever un plat
+                    plat.setSelectionne(0);
+                    if (commande.tousPlatsDeselect()) {
+                        commande.setSelectionner(0);
+                    }
+                } else {
+                    // on veut selectionner un plat
+                    plat.setSelectionne(1);
+                    if (commande.tousPlatsSelect()) {
+                        commande.setSelectionner(1);
+                    }
                 }
-            } else {
-                // on veut selectionner un plat
-                plat.setSelectionne(1);
-                plat.setNomSelectionne(session.getAttribute("nom").toString());
-                if (commande.tousPlatsSelect()) {
-                    commande.setSelectionner(1);
-                    commande.setNomSelectionne(session.getAttribute("nom").toString());
-                }
+                table.addTotalCour(montant);
             }
-            table.addTotalCour(montant);
             /* Envoi des informations et redirection */
             request.setAttribute("table", table);
             request.setAttribute("client", session.getAttribute("nom").toString());
