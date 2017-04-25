@@ -16,6 +16,7 @@ public class Plat {
     private String nom; 
     private int prix; 
     private int selectionne; // 0 = non select 1 = select
+    private String nomSelectionne = null;
 
     public Plat(String nom, int prix) {
         this.nom = nom;
@@ -43,10 +44,16 @@ public class Plat {
         this.selectionne = x; 
     }
     
-
     public int getSelectionne() {
         return selectionne;
     }
     
+    public void setNomSelectionne(String s){
+        this.nomSelectionne = s;
+    }
+    
+    public String getNomSelectionne(){
+        return this.nomSelectionne;
+    } 
     
 }

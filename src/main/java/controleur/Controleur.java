@@ -21,7 +21,6 @@ public class Controleur extends HttpServlet {
 
     /*Variables globales */
     Table table = null;
-    String client = null;
 
     /* créations des tables */
  /* scénario 4 étudiants */
@@ -54,15 +53,6 @@ public class Controleur extends HttpServlet {
         laurent.ajoutePlat(plat8);
         laurent.ajoutePlat(plat9);
         etudiants.ajouterCommande(laurent);
-        /*List<Plat> platsNicolas = new ArrayList<Plat>();
-        Commande nicolas = new Commande("nicolas");
-        Plat plat10 = new Plat("Magret de canard au miel", 16);
-        Plat plat11 = new Plat("Tarte aux pommes", 5);
-        Plat plat12 = new Plat("Badoit rouge", 3);
-        nicolas.ajoutePlat(plat10);
-        nicolas.ajoutePlat(plat11);
-        nicolas.ajoutePlat(plat12);
-        etudiants.ajouterCommande(nicolas);*/
         return etudiants;
     }
 
@@ -72,8 +62,22 @@ public class Controleur extends HttpServlet {
         Table couple = new Table("1couple");
         List<Plat> platsPaul = new ArrayList<Plat>();
         Commande paul = new Commande("paul");
+        Plat plat10 = new Plat("Magret de canard au miel", 16);
+        Plat plat11 = new Plat("Tarte aux pommes", 5);
+        Plat plat12 = new Plat("Badoit rouge", 3);
+        paul.ajoutePlat(plat10);
+        paul.ajoutePlat(plat11);
+        paul.ajoutePlat(plat12);
+        couple.ajouterCommande(paul);
         List<Plat> platsLouise = new ArrayList<Plat>();
         Commande louise = new Commande("louise");
+        Plat plat13 = new Plat("Feuilleté au chèvre chaud", 13);
+        Plat plat14 = new Plat("Panacotta fruits rouges", 5);
+        Plat plat15 = new Plat("Bouteille vin rosé", 3);
+        louise.ajoutePlat(plat13);
+        louise.ajoutePlat(plat14);
+        louise.ajoutePlat(plat15);
+        couple.ajouterCommande(louise);
         return couple;
     }
 
@@ -108,14 +112,18 @@ public class Controleur extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         String action = request.getParameter("action");
 
+        HttpSession session = request.getSession();
+
         if (action == null) {
-            request.getRequestDispatcher("/WEB-INF/finRepas.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/choixPersonne.jsp").forward(request, response);
         } else if (action.equals("choisirPartsPaiement")) {
             /* Lancer l'initialisation de la table selon le cas que l'on souhaite tester */
-            table = initEtudiants();
+            // table = initEtudiants();
+            table = initCouple();
             table.attribuerIdPlat();
             /* Choisir le client qui utilise l'ihm */
-            client = "vincent";
+            //client = "vincent";
+            //client = "louise"; 
             table.setTotalCour(0);
             table.passerCommandesDeselect();
             request.getRequestDispatcher("/WEB-INF/choisirPartsPaiement.jsp").forward(request, response);
@@ -130,6 +138,7 @@ public class Controleur extends HttpServlet {
             if (montant < 0) {
                 // on veut enlever une commande
                 commande.setSelectionner(0);
+                commande.setNomSelectionne(null);
                 if (commande.tousPlatsSelect()) {
                     commande.passerPlatsDeselect();
                     table.addTotalCour(montant);
@@ -139,6 +148,7 @@ public class Controleur extends HttpServlet {
                         Plat p = itPlat.next();
                         if (p.getSelectionne() == 1) {
                             p.setSelectionne(0);
+                            p.setNomSelectionne(null);
                             table.addTotalCour(-p.getPrix());
                         }
                     }
@@ -146,6 +156,7 @@ public class Controleur extends HttpServlet {
             } else {
                 // on veut selectionner une commande
                 commande.setSelectionner(1);
+                commande.setNomSelectionne(null);
                 if (commande.tousPlatsDeselect()) {
                     commande.passerPlatsSelect();
                     table.addTotalCour(montant);
@@ -155,6 +166,7 @@ public class Controleur extends HttpServlet {
                         Plat p = itPlat.next();
                         if (p.getSelectionne() == 0) {
                             p.setSelectionne(1);
+                            p.setNomSelectionne(session.getAttribute("nom").toString());
                             table.addTotalCour(p.getPrix());
                         }
                     }
@@ -163,7 +175,7 @@ public class Controleur extends HttpServlet {
 
             /* Envoi des informations et redirection*/
             request.setAttribute("table", table);
-            request.setAttribute("client", client);
+            request.setAttribute("client", session.getAttribute("nom").toString());
             request.getRequestDispatcher("/WEB-INF/paiementPersonnalise.jsp").forward(request, response);
 
         } else if (action.equals("AjoutOuRetraitPlat")) {
@@ -173,11 +185,14 @@ public class Controleur extends HttpServlet {
             String nomPlat = request.getParameter("plat");
             Commande commande = table.getCommande(nomCommande);
             Plat plat = commande.getPlat(nomPlat);
+
             if (montant < 0) {
                 // on veut enlever un plat
                 plat.setSelectionne(0);
+                plat.setNomSelectionne(null);
                 if (commande.tousPlatsDeselect()) {
                     commande.setSelectionner(0);
+                    commande.setNomSelectionne(null);
                 }
             } else {
                 // on veut selectionner un plat
@@ -187,9 +202,31 @@ public class Controleur extends HttpServlet {
                 }
             }
             table.addTotalCour(montant);
+
+                plat.setNomSelectionne(session.getAttribute("nom").toString());
+                if (commande.tousPlatsSelect()) {
+                    commande.setSelectionner(1);
+                    commande.setNomSelectionne(session.getAttribute("nom").toString());
+
+                    if (montant < 0) {
+                        // on veut enlever un plat
+                        plat.setSelectionne(0);
+                        if (commande.tousPlatsDeselect()) {
+                            commande.setSelectionner(0);
+                        }
+                    } else {
+                        // on veut selectionner un plat
+                        plat.setSelectionne(1);
+                        if (commande.tousPlatsSelect()) {
+                            commande.setSelectionner(1);
+                        }
+                    }
+                    table.addTotalCour(montant);
+                }
+            
             /* Envoi des informations et redirection */
             request.setAttribute("table", table);
-            request.setAttribute("client", client);
+            request.setAttribute("client", session.getAttribute("nom").toString());
             request.getRequestDispatcher("/WEB-INF/paiementPersonnalise.jsp").forward(request, response);
 
         } else if (action.equals("retourChoisirPartPaiement")) {
@@ -203,19 +240,19 @@ public class Controleur extends HttpServlet {
             table.setTotalCour(table.getTotal());
             /* Envoi des informations et redirection*/
             request.setAttribute("table", table);
-            request.setAttribute("client", client);
+            request.setAttribute("client", session.getAttribute("nom").toString());
             request.getRequestDispatcher("/WEB-INF/paiementPersonnalise.jsp").forward(request, response);
 
         } else if (action.equals("payerMaCommande")) {
             /* Envoi des informations et redirection*/
             request.setAttribute("table", table);
-            request.setAttribute("client", client);
+            request.setAttribute("client", session.getAttribute("nom").toString());
             request.getRequestDispatcher("/WEB-INF/payerMaCommande.jsp").forward(request, response);
 
         } else if (action.equals("paiementPersonnalise")) {
             /* Envoi des informations et redirection*/
             request.setAttribute("table", table);
-            request.setAttribute("client", client);
+            request.setAttribute("client", session.getAttribute("nom").toString());
             request.getRequestDispatcher("/WEB-INF/paiementPersonnalise.jsp").forward(request, response);
 
         } else if (action.equals("choisirMoyenPaiement")) {
@@ -261,8 +298,10 @@ public class Controleur extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         String action = request.getParameter("action");
 
-        if (true) {
-
+        if (action.equals("choixPersonne")) {
+            HttpSession session = request.getSession();
+            session.setAttribute("nom", request.getParameter("nom"));
+            request.getRequestDispatcher("/WEB-INF/finRepas.jsp").forward(request, response);
         } else {
             invalidParameters(request, response);
         }
