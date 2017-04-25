@@ -54,16 +54,20 @@
                         if (plat.getSelectionne() == 0) {
                             selectionner = "Sélectionner";
                             montant1 = plat.getPrix();
-                        } else {
+                        } else if (plat.getSelectionne() == 1 && plat.getNomSelectionne() == session.getAttribute("nom")){
                             selectionner = "Déselectionner";
                             montant1 = -plat.getPrix();
+                        } else{
+                            selectionner = "AutrePersonne";
                         }
+                        
                 %>
 
                 <!--<p align="left">-->
                 <tr>
                     <td><%=plat.getNom()%></td>
                     <td><%=plat.getPrix()%>€</td>
+                    <% if (!selectionner.equals("AutrePersonne")){%>
                     <td>
                         <form action="controleur" accept-charset="utf-8">
                             <button type="submit" ><%=selectionner%></button>
@@ -73,7 +77,9 @@
                             <input type="hidden" name="plat" value="<%=plat.getNom()%>"/>
                             <input type="hidden" name="nomCommande" value="<%=commande.getNomClient()%>"/>
                         </form></td>
-
+                    <%} else{%>
+                        <p> Le plat a deja ete selectionne par : <%= plat.getNomSelectionne() %></p>
+                    <%}%>
                 </tr>
 
                 <%
@@ -82,7 +88,7 @@
                 %>
 
             </table>
-            <p id="total"> Total : <%=commande.getTotal()%> €</p>
+            <p id="total"> Total <%=commande.getNomClient()%> : <%=commande.getTotal()%> €</p>
             <form action="controleur" accept-charset="utf-8">
                 <button type="submit" class="button" id="total"><span><%=toutSelectionner%></span></button><br>
                 <input type="hidden" name="action" value="AjoutOuRetraitCommandeEntiere"/>
@@ -105,7 +111,7 @@
                 <input type="hidden" name="action" value="reglerTotaliteNote"/>
                 <input type="hidden" name="total" value="<%=table.getTotal()%>"/>
             </form>
-            <p id="total"> Total :  <%=table.getTotalCour()%> €</p>
+            <p id="total"> Total à payer:  <%=table.getTotalCour()%> €</p>
             <form action="controleur" accept-charset="utf-8">
                 <button type="submit" class="button" id="total"><span>Valider</span></button><br>
                 <input type="hidden" name="action" value="recapitulatifChoixPlatsPaiement"/>

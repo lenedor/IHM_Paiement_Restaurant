@@ -19,6 +19,7 @@ public class Commande {
     private List<Plat> platsChoisis;
     private int total;
     private int selectionner; // 0 pas select , 1 = select
+    private String nomSelectionne;
 
     public Commande(String nomClient) {
         this.nomClient = nomClient;
@@ -57,6 +58,14 @@ public class Commande {
 
     public void setSelectionner(int selectionner) {
         this.selectionner = selectionner;
+    }
+    
+    public void setNomSelectionne(String nom){
+        this.nomSelectionne = nom;
+    }
+    
+    public String getNomSelectionne(){
+        return this.nomSelectionne;
     }
 
     public Plat getPlat(String nom) {
