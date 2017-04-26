@@ -20,14 +20,14 @@
         <title>Payer ma commande</title>
     </head>
     <body>
-        <p></p>
-        <p></p>
-        <p></p>
-        <p></p>
-        <p></p>
+         <form action="controleur" accept-charset="utf-8" align="right">
+                <button type="submit" class="button" id="actualiser"><span>Actualiser</span></button><br>
+                <input type="hidden" name="action" value="payerMaCommande"/>
+            </form>
         <h1>Votre commande : </h1>
         <form action="controleur" accept-charset="utf-8">
             <% int trouve = 0;
+            int total = 0; 
                 Table table = (Table) request.getAttribute("table");
                 Commande commande = null;
                 String client = (String)request.getAttribute("client");
@@ -55,7 +55,19 @@
             <!--<p align="left">-->
             <tr>
                     <td><%=plat.getNom()%></td>
+                    <% if (plat.getSelectionne() == 1 && plat.getNomSelectionne().equals(client)) {
+                        total += plat.getPrix(); 
+                        %>
+                        <td><%=plat.getPrix()%>€</td>
+                        <%
+                    } else if (plat.getSelectionne() == 1 && !plat.getNomSelectionne().equals(client)) {
+                        %>
+                        <td>Le plat a deja été sélectionné par : <%= plat.getNomSelectionne()%></td>
+                        <%
+                    } else {
+                        total += plat.getPrix(); %>
                     <td><%=plat.getPrix()%>€</td>
+                    <% } %>
             </tr>
             <p></p>
             <%
@@ -68,8 +80,11 @@
             
             <button type="submit" class="button" id="total"><span>Payer</span></button><br>
             <input type="hidden" name="action" value="choisirMoyenPaiement"/>
-            <input type="hidden" name="total" value=<%=commande.getTotal()%>/>
+            <input type="hidden" name="total" value=<%=total%>/>
         </form>
+        <p></p>
+        <p></p>
+        <p></p>
          <form action="controleur" method="get" align="center">
             <button type="submit" class="button"><span>Retour</span></button><br>
             <input type="hidden" name="action" value="retourChoisirPartPaiement"/>
