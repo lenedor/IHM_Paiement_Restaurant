@@ -59,12 +59,12 @@ public class Commande {
     public void setSelectionner(int selectionner) {
         this.selectionner = selectionner;
     }
-    
-    public void setNomSelectionne(String nom){
+
+    public void setNomSelectionne(String nom) {
         this.nomSelectionne = nom;
     }
-    
-    public String getNomSelectionne(){
+
+    public String getNomSelectionne() {
         return this.nomSelectionne;
     }
 
@@ -81,43 +81,56 @@ public class Commande {
         return null;
     }
 
+    public void passerPlatsDeselect(String nom) {
+        Iterator<Plat> it = this.platsChoisis.iterator();
+        while (it.hasNext()) {
+            Plat plat = it.next();
+            if (plat.getNomSelectionne().equals(nom)) {
+                plat.setSelectionne(0);
+                plat.setNomSelectionne(null);
+            }
+        }
+    }
+
     public void passerPlatsDeselect() {
         Iterator<Plat> it = this.platsChoisis.iterator();
         while (it.hasNext()) {
-            Plat plat = it.next();   
+            Plat plat = it.next();
             plat.setSelectionne(0);
             plat.setNomSelectionne(null);
         }
     }
-    
+
     public void passerPlatsSelect(String nom) {
         Iterator<Plat> it = this.platsChoisis.iterator();
         while (it.hasNext()) {
             Plat plat = it.next();
-            plat.setSelectionne(1);
-            plat.setNomSelectionne(nom);
+            if (plat.getSelectionne() == 0) {
+                plat.setSelectionne(1);
+                plat.setNomSelectionne(nom);
+            }
         }
     }
-    
+
     // dit si tous les plats d'une commande sont select
     public boolean tousPlatsSelect() {
-        Iterator<Plat> it = this.platsChoisis.iterator(); 
+        Iterator<Plat> it = this.platsChoisis.iterator();
         while (it.hasNext()) {
             if (it.next().getSelectionne() == 0) {
-                return false; 
+                return false;
             }
         }
-        return true; 
+        return true;
     }
-    
+
     public boolean tousPlatsDeselect() {
-        Iterator<Plat> it = this.platsChoisis.iterator(); 
+        Iterator<Plat> it = this.platsChoisis.iterator();
         while (it.hasNext()) {
             if (it.next().getSelectionne() == 1) {
-                return false; 
+                return false;
             }
         }
-        return true; 
+        return true;
     }
-    
+
 }

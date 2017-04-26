@@ -20,7 +20,15 @@
     </head>
     <body>
         <h1>Sélectionnez les items que vous souhaitez payer : </h1>
-
+        <% int impaye = (int) request.getAttribute("impaye"); 
+        if (impaye == 1) { %>
+                    <h3>Vous êtes le dernier à procéder au paiement, vous devez sélectionner les items restants</h3>
+                    <%
+        } %>
+    <form action="controleur" accept-charset="utf-8" align="right">
+                <button type="submit" class="button" id="actualiser"><span>Actualiser</span></button><br>
+                <input type="hidden" name="action" value="paiementPersonnalise"/>
+            </form>
 
 
         <%  Table table = (Table) request.getAttribute("table");
@@ -54,20 +62,20 @@
                         if (plat.getSelectionne() == 0) {
                             selectionner = "Sélectionner";
                             montant1 = plat.getPrix();
-                        } else if (plat.getSelectionne() == 1 && plat.getNomSelectionne() == session.getAttribute("nom")){
+                        } else if (plat.getSelectionne() == 1 && plat.getNomSelectionne() == session.getAttribute("nom")) {
                             selectionner = "Déselectionner";
                             montant1 = -plat.getPrix();
-                        } else{
+                        } else {
                             selectionner = "AutrePersonne";
                         }
-                        
+
                 %>
 
                 <!--<p align="left">-->
                 <tr>
                     <td><%=plat.getNom()%></td>
                     <td><%=plat.getPrix()%>€</td>
-                    <% if (!selectionner.equals("AutrePersonne")){%>
+                    <% if (!selectionner.equals("AutrePersonne")) {%>
                     <td>
                         <form action="controleur" accept-charset="utf-8">
                             <button type="submit" ><%=selectionner%></button>
@@ -77,8 +85,8 @@
                             <input type="hidden" name="plat" value="<%=plat.getNom()%>"/>
                             <input type="hidden" name="nomCommande" value="<%=commande.getNomClient()%>"/>
                         </form></td>
-                    <%} else{%>
-                        <td> Le plat a deja ete selectionne par : <%= plat.getNomSelectionne() %></td>
+                        <%} else {%>
+                    <td> Le plat a deja ete selectionne par : <%= plat.getNomSelectionne()%></td>
                     <%}%>
                 </tr>
 
@@ -102,13 +110,13 @@
             <form action="controleur" accept-charset="utf-8">
                 <% String totaliteNote = null;
                     if (table.getTotal() == table.getTotalCour()) {
-                        totaliteNote = "Désélectionner tout"; 
+                        totaliteNote = "Désélectionner tout";
                     } else {
-                        totaliteNote = "Régler la totalité de la note"; 
+                        totaliteNote = "Régler la totalité de la note";
                     }
-                    int enleverTotaliteNote = 0; 
+                    int enleverTotaliteNote = 0;
                     if (totaliteNote.equals("Désélectionner tout")) {
-                        enleverTotaliteNote = 1; 
+                        enleverTotaliteNote = 1;
                     }
                 %>
                 <button type="submit" class="button"><span><%=totaliteNote%></span></button><br>
@@ -126,6 +134,6 @@
                 <button type="submit" class="button"><span>Retour</span></button><br>
                 <input type="hidden" name="action" value="retourChoisirPartPaiement"/>
             </form>
-            
+
     </body>
 </html>
